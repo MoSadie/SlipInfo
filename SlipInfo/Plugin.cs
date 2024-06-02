@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Subpixel.Events;
 using System;
 using System.Net;
+using SlipInfo.Handlers;
 
 namespace SlipInfo
 {
@@ -16,10 +17,13 @@ namespace SlipInfo
     public class Plugin : BaseUnityPlugin
     {
         private static ConfigEntry<int> port;
+        private static ConfigEntry<string> prefix;
 
         private static HttpListener listener;
 
         internal static ManualLogSource Log;
+
+        private Dictionary<string, InfoHandler> handlers;
 
         private void Awake()
         {
@@ -27,7 +31,8 @@ namespace SlipInfo
             {
                 Plugin.Log = base.Logger;
 
-                port = Config.Bind("Server Settings", "Port", 8001);
+                port = Config.Bind("Server Settings", "Port", 8001, "Port to listen on.");
+                prefix = Config.Bind("Server Settings", "Prefix", "slipinfo", "Prefix to have in path.");
 
                 if (!HttpListener.IsSupported)
                 {
@@ -39,8 +44,13 @@ namespace SlipInfo
                 // Start the http server
                 listener = new HttpListener();
 
-                listener.Prefixes.Add($"http://127.0.0.1:{port.Value}/");
-                listener.Prefixes.Add($"http://localhost:{port.Value}/");
+                listener.Prefixes.Add($"http://127.0.0.1:{port.Value}/{prefix.Value}/");
+                listener.Prefixes.Add($"http://localhost:{port.Value}/{prefix.Value}/");
+
+                handlers = new Dictionary<string, InfoHandler>();
+                addHandler(new VersionHandler());
+                addHandler(new CrewListHandler());
+                addHandler(new CrewSearchHandler());
 
                 listener.Start();
 
@@ -62,6 +72,25 @@ namespace SlipInfo
 
         }
 
+        private void addHandler(InfoHandler handler)
+        {
+            if (handlers == null || handler == null)
+            {
+                return;
+            }
+
+            string path = $"/{prefix.Value}/{handler.GetPath()}";
+
+            if (handlers.ContainsKey(path))
+            {
+                Log.LogWarning($"Duplicate path attempted to register! {path}");
+                return;
+            }
+
+            Log.LogInfo($"Registered handler to {path}");
+            handlers.Add(path, handler);
+        }
+
         private void HandleRquest(IAsyncResult result)
         {
             Logger.LogInfo("Handling request");
@@ -74,12 +103,37 @@ namespace SlipInfo
                 HttpListenerRequest request = context.Request;
                 HttpListenerResponse response = context.Response;
 
+                HttpStatusCode status;
+                string responseString;
+
+                string pathUrl = request.RawUrl.Split('?', 2)[0];
+
+                Log.LogInfo(pathUrl);
+
+                if (handlers.ContainsKey(pathUrl))
+                {
+                    InfoHandler handler = handlers[pathUrl];
+                    InfoResponse infoResponse = handler.HandleRequest(request.QueryString);
+
+                    status = infoResponse.status;
+                    responseString = infoResponse.response;
+                } else
+                {
+                    status = HttpStatusCode.BadRequest;
+                    responseString = "{\"error\": \"Bad Request\"}"; 
+                }
+
+                /*
                 string responseString = $"Hello World!\n URL: {request.RawUrl}\n Query:";
 
                 foreach (string key in request.QueryString.AllKeys)
                 {
                     responseString += $"\n - {key}: {request.QueryString[key]}";
                 }
+
+                */
+
+                response.StatusCode = (int)status;
 
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
 

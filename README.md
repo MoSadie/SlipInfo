@@ -21,6 +21,10 @@ Returns a crew member by their username.
 
 - `username` (string): The username of the crew member.
 
+### GET /getSelf
+
+Returns information about the player character. Same information as /getCrewByUsername, but automatically selects the player character.
+
 ### GET /getShipInfo
 
 Returns information about the ship including type, name, ship health, and hull damage.

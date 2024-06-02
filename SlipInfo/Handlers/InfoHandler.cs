@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Net;
 using System.Text;
 
 namespace SlipInfo.Handlers
@@ -15,9 +16,9 @@ namespace SlipInfo.Handlers
     public class InfoResponse
     {
         public string response;
-        public int status;
+        public HttpStatusCode status;
 
-        public InfoResponse(string response, int status)
+        public InfoResponse(string response, HttpStatusCode status)
         {
             this.response = response;
             this.status = status;
