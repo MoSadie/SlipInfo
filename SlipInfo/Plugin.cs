@@ -48,9 +48,17 @@ namespace SlipInfo
                 listener.Prefixes.Add($"http://localhost:{port.Value}/{prefix.Value}/");
 
                 handlers = new Dictionary<string, InfoHandler>();
+                
                 addHandler(new VersionHandler());
+
                 addHandler(new CrewListHandler());
                 addHandler(new CrewSearchHandler());
+                addHandler(new CrewSelfHandler());
+
+                addHandler(new ShipInfoHandler());
+                addHandler(new EnemyShipInfoHandler());
+
+                addHandler(new RunInfoHandler());
 
                 listener.Start();
 

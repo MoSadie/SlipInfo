@@ -1,14 +1,15 @@
-﻿using System;
+﻿using SlipInfo.Data;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SlipInfo.Responses
 {
-    class CrewUsernameResponse
+    class CrewResponse
     {
         public CrewmateInfo crewmate;
 
-        public CrewUsernameResponse(string username)
+        public CrewResponse(string username)
         {
             MpSvc mpSvc = Svc.Get<MpSvc>();
 
@@ -40,6 +41,17 @@ namespace SlipInfo.Responses
                     continue;
                 }
             }
+        }
+
+        public CrewResponse(Crewmate crewmateIn)
+        {
+            if (crewmateIn == null)
+            {
+                crewmate = null;
+                return;
+            }
+
+            crewmate = new CrewmateInfo(crewmateIn);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlipInfo.Data;
+using System;
 using System.Collections.Generic;
 
 public class CrewListResponse

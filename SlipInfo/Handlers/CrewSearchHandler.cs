@@ -23,7 +23,7 @@ namespace SlipInfo.Handlers
                 return new InfoResponse("{\"error\": \"Invalid query!\"}", HttpStatusCode.BadRequest);
             }
 
-            CrewUsernameResponse response = new CrewUsernameResponse(query.Get("username"));
+            CrewResponse response = new CrewResponse(query.Get("username"));
 
             if (response.crewmate == null)
             {
