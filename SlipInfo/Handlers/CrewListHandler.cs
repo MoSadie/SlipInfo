@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
+using SlipInfo.Responses;
 
 namespace SlipInfo.Handlers
 {

@@ -2,23 +2,26 @@
 using System;
 using System.Collections.Generic;
 
-public class CrewListResponse
+namespace SlipInfo.Responses
 {
-	public List<CrewmateInfo> crewList;
-
-	public CrewListResponse(List<Crewmate> crewList)
+	public class CrewListResponse
 	{
-		// For each crewmate in the list, add them to the response as a new CrewResponse object
-		this.crewList = new List<CrewmateInfo>();
+		public List<CrewmateInfo> crewList;
 
-		if (crewList == null)
+		public CrewListResponse(List<Crewmate> crewList)
 		{
-            return;
-        }
+			// For each crewmate in the list, add them to the response as a new CrewResponse object
+			this.crewList = new List<CrewmateInfo>();
 
-		foreach (Crewmate crewmate in crewList)
-		{
-            this.crewList.Add(new CrewmateInfo(crewmate));
-        }
+			if (crewList == null)
+			{
+				return;
+			}
+
+			foreach (Crewmate crewmate in crewList)
+			{
+				this.crewList.Add(new CrewmateInfo(crewmate));
+			}
+		}
 	}
 }
