@@ -92,7 +92,7 @@ namespace SlipInfo
                 return;
             }
 
-            Log.LogInfo($"Registered handler to {path}");
+            Log.LogInfo($"Registered handler for {path}");
             handlers.Add(path, handler);
         }
 

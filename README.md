@@ -1,5 +1,23 @@
 # SlipInfo
- Local API mod for Slipstream: Rogue Space
+ Local API mod for [Slipstream: Rogue Space](https://playslipstream.com). Hosts a local HTTP server you can query for information about the current game state.
+
+ ## Requirements
+
+- [Slipstream: Rogue Space (on Steam)](https://playslipstream.com)
+- [r2modman](https://thunderstore.io/c/slipstream-rogue-space/p/ebkr/r2modman/)
+
+## (Quick) Setup Video
+
+(video soon!)
+
+## Installation
+
+1) Launch Slipstream at least once.
+2) Download and setup r2modman from [here](https://thunderstore.io/c/slipstream-rogue-space/p/ebkr/r2modman/) (Click "Manual Download" and run the setup exe)
+3) Select "Slipstream: Rogue Space" from the list of games in r2modman and create a profile.
+4) In the "Online" tab look for SlipInfo and click it. Then click "Download"
+5) Launch Slipstream using the "Start modded" button to generate the config file.
+5) (Optional) Modify the config file using the "Config editor" tab. (see the config file for more details)
 
 ## Configuration Options
 
@@ -11,11 +29,13 @@ The port the API will listen on. Default is 8001.
 
 The prefix for the API. Default is `/slipinfo`. (Ex `http://localhost:8001/slipinfo/getCrew`)
 
+**If you run into any issues getting this set up, please reach out! Best way is via Discord or GitHub Issues!**
+
 ## API Endpoints
 
 ### GET /version
 
-Gets the version information _for the mod_. Useful for testing without having to join a ship, works from the title screen.
+Gets the version information _for the mod_. Useful for testing without having to join a ship or sign in, since this works from the title screen.
 
 <details>
 <summary>Example Response</summary>
@@ -128,7 +148,7 @@ Returns information about the ship including type, name, ship health, and fuel t
     "currentHealth":10180.333,
     "maxFuel":16,
     "currentFuel":6,
-    "currentSalvage":0, //Note this may not be accurate if not the captain.
+    "currentSalvage":0, //Note this may not be accurate if you are not the captain.
     "currentGems":72
 }
 ```
