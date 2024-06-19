@@ -43,10 +43,12 @@ namespace SlipInfo.Handlers
 
                 string json = JsonConvert.SerializeObject(response);
 
+                Plugin.Log.LogInfo("Returning enemy ship info.");
                 return new InfoResponse(json, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
+                Plugin.Log.LogError($"An exception occurred handling getting enemy ship info. {ex.Message}");
                 return new InfoResponse($"{{\"error\": \"An exception occurred handling getting enemy ship info. {ex.Message}\"}}", HttpStatusCode.InternalServerError);
             }
         }

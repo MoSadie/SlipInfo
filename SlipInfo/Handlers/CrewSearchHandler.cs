@@ -20,6 +20,7 @@ namespace SlipInfo.Handlers
         {
             if (query == null || query.Get("username") == null)
             {
+                Plugin.Log.LogError("Invalid query! (CrewSearchHandler)");
                 return new InfoResponse("{\"error\": \"Invalid query!\"}", HttpStatusCode.BadRequest);
             }
 
@@ -27,6 +28,7 @@ namespace SlipInfo.Handlers
 
             if (response.crewmate == null)
             {
+                Plugin.Log.LogError("User not found! (CrewSearchHandler)");
                 return new InfoResponse("{\"error\": \"User not found!\"}", HttpStatusCode.NotFound);
             }
 
@@ -34,10 +36,12 @@ namespace SlipInfo.Handlers
             {
                 string json = JsonConvert.SerializeObject(response);
 
+                Plugin.Log.LogInfo("Returning crewmate info.");
                 return new InfoResponse(json, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
+                Plugin.Log.LogError($"An error occurred in CrewSearchHandler: {ex.Message}");
                 return new InfoResponse($"{{\"error\": \"An error occured in CrewSearchHandler: {ex.Message}\"}}", HttpStatusCode.InternalServerError);
             }
         }

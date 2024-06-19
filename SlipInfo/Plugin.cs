@@ -1,11 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using System.Collections.Generic;
-using HarmonyLib;
 using BepInEx.Logging;
 using UnityEngine;
-using Newtonsoft.Json;
-using Subpixel.Events;
 using System;
 using System.Net;
 using SlipInfo.Handlers;
@@ -32,7 +29,7 @@ namespace SlipInfo
                 Plugin.Log = base.Logger;
 
                 port = Config.Bind("Server Settings", "Port", 8001, "Port to listen on.");
-                prefix = Config.Bind("Server Settings", "Prefix", "slipinfo", "Prefix to have in path.");
+                prefix = Config.Bind("Server Settings", "Prefix", "slipinfo", "Prefix to have in path. Ex http://localhost:<port>/<prefix>/version");
 
                 if (!HttpListener.IsSupported)
                 {
@@ -62,7 +59,7 @@ namespace SlipInfo
 
                 listener.Start();
 
-                listener.BeginGetContext(new AsyncCallback(HandleRquest), listener);
+                listener.BeginGetContext(new AsyncCallback(HandleRequest), listener);
 
                 Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
@@ -99,7 +96,7 @@ namespace SlipInfo
             handlers.Add(path, handler);
         }
 
-        private void HandleRquest(IAsyncResult result)
+        private void HandleRequest(IAsyncResult result)
         {
             Logger.LogInfo("Handling request");
             try
@@ -116,10 +113,10 @@ namespace SlipInfo
 
                 string pathUrl = request.RawUrl.Split('?', 2)[0];
 
-                Log.LogInfo(pathUrl);
-
+                
                 if (handlers.ContainsKey(pathUrl))
                 {
+                    Log.LogInfo($"Handling request with path: {pathUrl}");
                     InfoHandler handler = handlers[pathUrl];
                     InfoResponse infoResponse = handler.HandleRequest(request.QueryString);
 
@@ -127,19 +124,10 @@ namespace SlipInfo
                     responseString = infoResponse.response;
                 } else
                 {
+                    Log.LogDebug($"No handler found.");
                     status = HttpStatusCode.BadRequest;
                     responseString = "{\"error\": \"Bad Request\"}"; 
                 }
-
-                /*
-                string responseString = $"Hello World!\n URL: {request.RawUrl}\n Query:";
-
-                foreach (string key in request.QueryString.AllKeys)
-                {
-                    responseString += $"\n - {key}: {request.QueryString[key]}";
-                }
-
-                */
 
                 response.StatusCode = (int)status;
 
@@ -152,7 +140,7 @@ namespace SlipInfo
 
 
                 // Start listening for the next request
-                listener.BeginGetContext(new AsyncCallback(HandleRquest), listener);
+                listener.BeginGetContext(new AsyncCallback(HandleRequest), listener);
             } catch (Exception e)
             {
                 Log.LogError("An error occurred while handling the request.");

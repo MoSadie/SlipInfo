@@ -5,7 +5,7 @@
     <AssemblyName>com.mosadie.slipinfo</AssemblyName>
     <Product>SlipInfo</Product>
     <Description>Local API for getting game state information</Description>
-    <Version>0.0.1</Version>
+    <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
