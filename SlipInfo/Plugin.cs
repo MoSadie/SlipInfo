@@ -131,6 +131,8 @@ namespace SlipInfo
 
                 response.StatusCode = (int)status;
 
+                response.Headers.Add("Access-Control-Allow-Origin", "*");
+
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
 
                 response.ContentLength64 = buffer.Length;
