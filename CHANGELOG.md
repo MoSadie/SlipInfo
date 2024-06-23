@@ -1,3 +1,9 @@
+## v1.0.1
+
+Fixed an issue when attempting to make requests from another website using JS. Added the correct header for it.
+
+In fun news, making great progress on some OBS overlays using this mod, more to share soon on those.
+
 ## v1.0.0
 
 ### Initial Release!
