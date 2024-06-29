@@ -22,11 +22,20 @@ namespace SlipInfo
 
         private Dictionary<string, InfoHandler> handlers;
 
+        public static readonly string COMPATIBLE_GAME_VERSION = "4.1556";
+
         private void Awake()
         {
             try
             {
                 Plugin.Log = base.Logger;
+
+                Log.LogInfo($"Game version: {Application.version}");
+                if (Application.version != COMPATIBLE_GAME_VERSION)
+                {
+                    Log.LogError($"This version of SlipInfo is not compatible with the current game version. Please check for an updated version of the plugin.");
+                    return;
+                }
 
                 port = Config.Bind("Server Settings", "Port", 8001, "Port to listen on.");
                 prefix = Config.Bind("Server Settings", "Prefix", "slipinfo", "Prefix to have in path. Ex http://localhost:<port>/<prefix>/version");

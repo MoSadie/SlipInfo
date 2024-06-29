@@ -4,7 +4,7 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "MoSadie"
 name = "SlipInfo"
-versionNumber = "1.0.1"
+versionNumber = "1.0.2"
 description = "Local HTTP server to get game state info!"
 websiteUrl = "https://github.com/MoSadie/SlipInfo"
 containsNsfwContent = false

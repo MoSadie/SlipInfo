@@ -1,3 +1,7 @@
+## v1.0.2
+
+Added game version detection. Will automatically disable ourselves if the game version changes.
+
 ## v1.0.1
 
 Fixed an issue when attempting to make requests from another website using JS. Added the correct header for it.
