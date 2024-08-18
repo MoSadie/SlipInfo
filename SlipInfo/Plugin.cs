@@ -16,13 +16,15 @@ namespace SlipInfo
         private static ConfigEntry<int> port;
         private static ConfigEntry<string> prefix;
 
+        private static ConfigEntry<bool> debugLogs;
+
         private static HttpListener listener;
 
         internal static ManualLogSource Log;
 
         private Dictionary<string, InfoHandler> handlers;
 
-        public static readonly string COMPATIBLE_GAME_VERSION = "4.1556";
+        public static readonly string COMPATIBLE_GAME_VERSION = "4.1566";
 
         private void Awake()
         {
@@ -39,6 +41,8 @@ namespace SlipInfo
 
                 port = Config.Bind("Server Settings", "Port", 8001, "Port to listen on.");
                 prefix = Config.Bind("Server Settings", "Prefix", "slipinfo", "Prefix to have in path. Ex http://localhost:<port>/<prefix>/version");
+
+                debugLogs = Config.Bind("Debug", "DebugLogs", false, "Enable additional logging for debugging");
 
                 if (!HttpListener.IsSupported)
                 {
@@ -86,6 +90,38 @@ namespace SlipInfo
 
         }
 
+        internal static void debugLogInfo(string message)
+        {
+            if (debugLogs.Value)
+            {
+                Log.LogInfo(message);
+            }
+        }
+
+        internal static void debugLogWarn(string message)
+        {
+            if (debugLogs.Value)
+            {
+                Log.LogWarning(message);
+            }
+        }
+
+        internal static void debugLogError(string message)
+        {
+            if (debugLogs.Value)
+            {
+                Log.LogError(message);
+            }
+        }
+
+        internal static void debugLogDebug(string message)
+        {
+            if (debugLogs.Value)
+            {
+                Log.LogDebug(message);
+            }
+        }
+
         private void addHandler(InfoHandler handler)
         {
             if (handlers == null || handler == null)
@@ -107,7 +143,7 @@ namespace SlipInfo
 
         private void HandleRequest(IAsyncResult result)
         {
-            Logger.LogInfo("Handling request");
+            debugLogInfo("Handling request");
             try
             {
                 HttpListener listener = (HttpListener)result.AsyncState;
@@ -125,7 +161,7 @@ namespace SlipInfo
                 
                 if (handlers.ContainsKey(pathUrl))
                 {
-                    Log.LogInfo($"Handling request with path: {pathUrl}");
+                    debugLogInfo($"Handling request with path: {pathUrl}");
                     InfoHandler handler = handlers[pathUrl];
                     InfoResponse infoResponse = handler.HandleRequest(request.QueryString);
 
@@ -133,7 +169,7 @@ namespace SlipInfo
                     responseString = infoResponse.response;
                 } else
                 {
-                    Log.LogDebug($"No handler found.");
+                    debugLogInfo($"No handler found.");
                     status = HttpStatusCode.BadRequest;
                     responseString = "{\"error\": \"Bad Request\"}"; 
                 }

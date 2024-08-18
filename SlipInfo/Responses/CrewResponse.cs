@@ -38,7 +38,7 @@ namespace SlipInfo.Responses
                     }
                 } catch (Exception ex) {
                     // Just skip that crewmate, likely offline so no player attached.
-                    Plugin.Log.LogDebug($"An error occurred while checking crewmate display names in CrewResponse: {ex.Message}");
+                    Plugin.debugLogDebug($"An error occurred while checking crewmate display names in CrewResponse: {ex.Message}");
                     continue;
                 }
             }

@@ -46,7 +46,7 @@ namespace SlipInfo.Handlers
 
             if (self == null)
             {
-                Plugin.Log.LogError("Could not find the local crewmember. (CrewSelfHandler)");
+                Plugin.debugLogError("Could not find the local crewmember. (CrewSelfHandler)");
                 return new InfoResponse("{\"error\": \"Could not find the local crewmember.\"}", HttpStatusCode.InternalServerError);
             }
 
@@ -54,7 +54,7 @@ namespace SlipInfo.Handlers
             {
                 string json = JsonConvert.SerializeObject(new CrewResponse(self));
 
-                Plugin.Log.LogInfo("Returning self crewmate info.");
+                Plugin.debugLogInfo("Returning self crewmate info.");
                 return new InfoResponse(json, HttpStatusCode.OK);
             } catch (Exception ex)
             {

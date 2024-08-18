@@ -36,7 +36,7 @@ namespace SlipInfo.Handlers
 
                 string json = JsonConvert.SerializeObject(info);
 
-                Plugin.Log.LogInfo("Returning run info.");
+                Plugin.debugLogInfo("Returning run info.");
                 return new InfoResponse(json, HttpStatusCode.OK);
 
             } catch (Exception ex)

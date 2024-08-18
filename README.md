@@ -147,7 +147,7 @@ Returns information about the ship including type, name, ship health, and fuel t
     "minHealth":1888.0,
     "currentHealth":10180.333,
     "maxFuel":16,
-    "currentFuel":6,
+    "currentFuel":6, // Note this may not be accurate if you are not the captain.
     "currentSalvage":0, //Note this may not be accurate if you are not the captain.
     "currentGems":72
 }

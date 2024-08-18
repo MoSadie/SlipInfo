@@ -1,3 +1,7 @@
+## v1.0.3
+
+Updated to support the 1.80.0 Hotfix 1 version of the game, released on August 18th, 2024.
+
 ## v1.0.2
 
 Added game version detection. Will automatically disable ourselves if the game version changes.

@@ -32,7 +32,7 @@ namespace SlipInfo.Handlers
             {
                 string json = JsonConvert.SerializeObject(response);
 
-                Plugin.Log.LogInfo("Returning crew list.");
+                Plugin.debugLogInfo("Returning crew list.");
                 return new InfoResponse(json, HttpStatusCode.OK);
             }
             catch (Exception ex)
