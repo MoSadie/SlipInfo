@@ -1,3 +1,9 @@
+## v1.0.4
+
+Updated to support the v1.90.0 Release of the game.
+
+And also some internal changes to allow the ability to manage the compatible versions without making a new release every time.
+
 ## v1.0.3
 
 Updated to support the 1.80.0 Hotfix 1 version of the game, released on August 18th, 2024.

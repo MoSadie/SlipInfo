@@ -5,7 +5,7 @@
     <AssemblyName>com.mosadie.slipinfo</AssemblyName>
     <Product>SlipInfo</Product>
     <Description>Local API for getting game state information</Description>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -25,6 +25,12 @@
   <ItemGroup>
     <Reference Include="GameAssembly">
       <HintPath>lib/Assembly-CSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MoCore">
+      <HintPath>lib/com.mosadie.mocore.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
