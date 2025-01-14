@@ -1,0 +1,15 @@
+{
+    "crewmate":{
+        "name":"MoSadie",
+        "archetype":"turtle",
+        "skin":"TurtleWildWest",
+        "level":3,
+        "xp":1678,
+        "currentHealth":50.0,
+        "maxHealth":50.0,
+        "currentShields":0.0,
+        "maxShields":80.0,
+        "isCaptain":false,
+        "isLocalPlayer":true
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "enemyShip":{
+        "maxHealth":10868.0,
+        "minHealth":0.0,
+        "currentHealth":3053.50952,
+        "name":"FUEL SPEEDER",
+        "invaders":"None",
+        "intel":"Automated fuel supply ship. Lightly armed but built for extreme speed.",
+        "threatLevel":5,
+        "cargoLevel":5,
+        "speedLevel":10
+    }
+}

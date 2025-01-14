@@ -1,0 +1,15 @@
+{
+    "crewmate":{
+        "name":"MoSadie",
+        "archetype":"hamster",
+        "skin":"HamsterWildWest",
+        "level":15,
+        "xp":87661,
+        "currentHealth":40.0,
+        "maxHealth":40.0,
+        "currentShields":0.0,
+        "maxShields":40.0,
+        "isCaptain":false,
+        "isLocalPlayer":true
+    }
+}
