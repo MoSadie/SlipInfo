@@ -1,3 +1,7 @@
+## v1.0.5
+
+Attempted to fix an issue where after some time the server would stop responding.
+
 ## v1.0.4
 
 Updated to support the v1.90.0 Release of the game.
