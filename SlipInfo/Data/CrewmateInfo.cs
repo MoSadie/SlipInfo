@@ -51,7 +51,7 @@ namespace SlipInfo.Data
 			}
 			catch (Exception e)
 			{
-				Plugin.Log.LogError($"An error occurred while checking if the crewmate is the captain: {e.Message}");
+				SlipInfo.Log.LogError($"An error occurred while checking if the crewmate is the captain: {e.Message}");
 				return false;
 			}
 		}

@@ -19,10 +19,10 @@ namespace SlipInfo.Handlers
         {
             MpSvc mpSvc = Svc.Get<MpSvc>();
             if (mpSvc == null) {
-                Plugin.Log.LogError("An error occurred in CrewListHandler! mpSvc was null!");
+                SlipInfo.Log.LogError("An error occurred in CrewListHandler! mpSvc was null!");
                 return new InfoResponse("{\"error\": \"An error occurred in CrewListHandler! mpSvc was null!\"}", HttpStatusCode.InternalServerError);
             } else if (mpSvc.Crew == null) {
-                Plugin.Log.LogError("An error occurred in CrewListHandler! MpCrewController was null!");
+                SlipInfo.Log.LogError("An error occurred in CrewListHandler! MpCrewController was null!");
                 return new InfoResponse("{\"error\": \"An error occurred in CrewListHandler: MpCrewController was null!\"}", HttpStatusCode.InternalServerError);
             }
 
@@ -32,12 +32,12 @@ namespace SlipInfo.Handlers
             {
                 string json = JsonConvert.SerializeObject(response);
 
-                Plugin.debugLogInfo("Returning crew list.");
+                SlipInfo.DebugLogInfo("Returning crew list.");
                 return new InfoResponse(json, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
-                Plugin.Log.LogError($"An error occurred in CrewListHandler: {ex.Message}");
+                SlipInfo.Log.LogError($"An error occurred in CrewListHandler: {ex.Message}");
                 return new InfoResponse($"{{\"error\": \"An error occured in CrewListHandler: {ex.Message}\"}}", HttpStatusCode.InternalServerError);
             }
 

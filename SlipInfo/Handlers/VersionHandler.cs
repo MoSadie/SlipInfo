@@ -21,7 +21,7 @@ namespace SlipInfo.Handlers
 
             string json = JsonConvert.SerializeObject(response);
 
-            Plugin.debugLogInfo("Returning SlipInfo version info.");
+            SlipInfo.DebugLogInfo("Returning SlipInfo version info.");
             return new InfoResponse(json, HttpStatusCode.OK);
         }
     }

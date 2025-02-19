@@ -23,12 +23,12 @@ namespace SlipInfo.Handlers
 
                 if (mpSvc == null)
                 {
-                    Plugin.Log.LogError("An error occurred in RunInfoHandler! mpSvc was null!");
+                    SlipInfo.Log.LogError("An error occurred in RunInfoHandler! mpSvc was null!");
                     return new InfoResponse("{\"error\": \"An error occurred in RunInfoHandler! mpSvc was null!\"}", HttpStatusCode.InternalServerError);
                 }
                 else if (mpSvc.Campaigns == null)
                 {
-                    Plugin.Log.LogError("An error occurred in RunInfoHandler! MpCampaignController was null!");
+                    SlipInfo.Log.LogError("An error occurred in RunInfoHandler! MpCampaignController was null!");
                     return new InfoResponse("{\"error\": \"An error occurred in RunInfoHandler: MpCampaignController was null!\"}", HttpStatusCode.InternalServerError);
                 }
 
@@ -36,12 +36,12 @@ namespace SlipInfo.Handlers
 
                 string json = JsonConvert.SerializeObject(info);
 
-                Plugin.debugLogInfo("Returning run info.");
+                SlipInfo.DebugLogInfo("Returning run info.");
                 return new InfoResponse(json, HttpStatusCode.OK);
 
             } catch (Exception ex)
             {
-                Plugin.Log.LogError($"An exception occurred handling getting run info. {ex.Message}");
+                SlipInfo.Log.LogError($"An exception occurred handling getting run info. {ex.Message}");
                 return new InfoResponse($"{{\"error\": \"An exception occurred handling getting run info. {ex.Message}\"}}", HttpStatusCode.InternalServerError);
             }
         }

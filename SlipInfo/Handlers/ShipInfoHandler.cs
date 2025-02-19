@@ -23,7 +23,7 @@ namespace SlipInfo.Handlers
 
                 if (mpSvc == null)
                 {
-                    Plugin.Log.LogError("An error occurred in ShipInfoHandler! mpSvc was null!");
+                    SlipInfo.Log.LogError("An error occurred in ShipInfoHandler! mpSvc was null!");
                     return new InfoResponse("{\"error\": \"An error occurred handling ship info. null MpSvc.\"}", HttpStatusCode.InternalServerError);
                 }
 
@@ -31,7 +31,7 @@ namespace SlipInfo.Handlers
 
                 if (mpShipController == null)
                 {
-                    Plugin.Log.LogError("An error occurred in ShipInfoHandler! MpShipController was null!");
+                    SlipInfo.Log.LogError("An error occurred in ShipInfoHandler! MpShipController was null!");
                     return new InfoResponse("{\"error\": \"An error occurred handling ship info. null MpShipController.\"}", HttpStatusCode.InternalServerError);
                 }
 
@@ -39,11 +39,11 @@ namespace SlipInfo.Handlers
 
                 string json = JsonConvert.SerializeObject(info);
 
-                Plugin.debugLogInfo("Returning ship info.");
+                SlipInfo.DebugLogInfo("Returning ship info.");
                 return new InfoResponse(json, HttpStatusCode.OK);
             } catch (Exception ex)
             {
-                Plugin.Log.LogError($"An exception occurred handling ship info. {ex.Message}");
+                SlipInfo.Log.LogError($"An exception occurred handling ship info. {ex.Message}");
                 return new InfoResponse($"{{\"error\": \"An exception occurred handling ship info. {ex.Message}\"}}", HttpStatusCode.InternalServerError);
             }
         }

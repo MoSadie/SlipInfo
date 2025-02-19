@@ -7,13 +7,14 @@ using System;
 using System.Net;
 using SlipInfo.Handlers;
 using MoCore;
+using System.Threading;
 
 namespace SlipInfo
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     [BepInDependency("com.mosadie.mocore", BepInDependency.DependencyFlags.HardDependency)]
     [BepInProcess("Slipstream_Win.exe")]
-    public class Plugin : BaseUnityPlugin, MoPlugin
+    public class SlipInfo : BaseUnityPlugin, MoPlugin
     {
         private static ConfigEntry<int> port;
         private static ConfigEntry<string> prefix;
@@ -21,19 +22,20 @@ namespace SlipInfo
         private static ConfigEntry<bool> debugLogs;
 
         private static HttpListener listener;
+        private Thread serverThread;
 
         internal static ManualLogSource Log;
 
         private Dictionary<string, InfoHandler> handlers;
 
-        public static readonly string COMPATIBLE_GAME_VERSION = "4.1579";
+        public static readonly string COMPATIBLE_GAME_VERSION = "4.1595";
         public static readonly string GAME_VERSION_URL = "https://raw.githubusercontent.com/MoSadie/SlipInfo/refs/heads/main/versions.json";
 
         private void Awake()
         {
             try
             {
-                Plugin.Log = base.Logger;
+                SlipInfo.Log = base.Logger;
 
                 if (!MoCore.MoCore.RegisterPlugin(this))
                 {
@@ -61,20 +63,19 @@ namespace SlipInfo
 
                 handlers = new Dictionary<string, InfoHandler>();
                 
-                addHandler(new VersionHandler());
+                AddHandler(new VersionHandler());
 
-                addHandler(new CrewListHandler());
-                addHandler(new CrewSearchHandler());
-                addHandler(new CrewSelfHandler());
+                AddHandler(new CrewListHandler());
+                AddHandler(new CrewSearchHandler());
+                AddHandler(new CrewSelfHandler());
 
-                addHandler(new ShipInfoHandler());
-                addHandler(new EnemyShipInfoHandler());
+                AddHandler(new ShipInfoHandler());
+                AddHandler(new EnemyShipInfoHandler());
 
-                addHandler(new RunInfoHandler());
+                AddHandler(new RunInfoHandler());
 
-                listener.Start();
-
-                listener.BeginGetContext(new AsyncCallback(HandleRequest), listener);
+                serverThread = new Thread(() => ServerThread(listener));
+                serverThread.Start();
 
                 Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
@@ -92,7 +93,26 @@ namespace SlipInfo
 
         }
 
-        internal static void debugLogInfo(string message)
+        private void ServerThread(HttpListener listener)
+        {
+            try
+            {
+                listener.Start();
+
+                while (listener.IsListening)
+                {
+                    HttpListenerContext context = listener.GetContext();
+                    HandleRequest(context);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.LogError("An exception occurred in the http server thread.");
+                Log.LogError(e.Message);
+            }
+        }
+
+        internal static void DebugLogInfo(string message)
         {
             if (debugLogs.Value)
             {
@@ -100,7 +120,7 @@ namespace SlipInfo
             }
         }
 
-        internal static void debugLogWarn(string message)
+        internal static void DebugLogWarn(string message)
         {
             if (debugLogs.Value)
             {
@@ -108,7 +128,7 @@ namespace SlipInfo
             }
         }
 
-        internal static void debugLogError(string message)
+        internal static void DebugLogError(string message)
         {
             if (debugLogs.Value)
             {
@@ -116,7 +136,7 @@ namespace SlipInfo
             }
         }
 
-        internal static void debugLogDebug(string message)
+        internal static void DebugLogDebug(string message)
         {
             if (debugLogs.Value)
             {
@@ -124,7 +144,7 @@ namespace SlipInfo
             }
         }
 
-        private void addHandler(InfoHandler handler)
+        private void AddHandler(InfoHandler handler)
         {
             if (handlers == null || handler == null)
             {
@@ -143,15 +163,11 @@ namespace SlipInfo
             handlers.Add(path, handler);
         }
 
-        private void HandleRequest(IAsyncResult result)
+        private void HandleRequest(HttpListenerContext context)
         {
-            debugLogInfo("Handling request");
+            DebugLogInfo("Handling request");
             try
             {
-                HttpListener listener = (HttpListener)result.AsyncState;
-
-                HttpListenerContext context = listener.EndGetContext(result);
-
                 HttpListenerRequest request = context.Request;
                 HttpListenerResponse response = context.Response;
 
@@ -163,7 +179,7 @@ namespace SlipInfo
                 
                 if (handlers.ContainsKey(pathUrl))
                 {
-                    debugLogInfo($"Handling request with path: {pathUrl}");
+                    DebugLogInfo($"Handling request with path: {pathUrl}");
                     InfoHandler handler = handlers[pathUrl];
                     InfoResponse infoResponse = handler.HandleRequest(request.QueryString);
 
@@ -171,7 +187,7 @@ namespace SlipInfo
                     responseString = infoResponse.response;
                 } else
                 {
-                    debugLogInfo($"No handler found.");
+                    DebugLogInfo($"No handler found.");
                     status = HttpStatusCode.BadRequest;
                     responseString = "{\"error\": \"Bad Request\"}"; 
                 }
@@ -186,10 +202,6 @@ namespace SlipInfo
                 System.IO.Stream output = response.OutputStream;
                 output.Write(buffer, 0, buffer.Length);
                 output.Close();
-
-
-                // Start listening for the next request
-                listener.BeginGetContext(new AsyncCallback(HandleRequest), listener);
             } catch (Exception e)
             {
                 Log.LogError("An error occurred while handling the request.");
@@ -201,7 +213,7 @@ namespace SlipInfo
     private void ApplicationQuitting()
         {
             Logger.LogInfo("Stopping server");
-            // Stop server
+            // Stop server, the thread is looking for the listener to stop listening
             listener.Close();
         }
 

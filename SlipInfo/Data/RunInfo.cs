@@ -30,7 +30,7 @@ namespace SlipInfo.Data
             {
                 if (mpCampaignController.CurrentCampaign == null)
                 {
-                    Plugin.debugLogInfo("Current campaign is null");
+                    SlipInfo.DebugLogInfo("Current campaign is null");
                     return;
                 } else if (mpCampaignController.CurrentCampaign.CaptainCampaign != null) { // Only Captains get this info
                     region = mpCampaignController.CurrentCampaign.CaptainCampaign.RegionVo.Metadata.Name;

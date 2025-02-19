@@ -21,7 +21,7 @@ namespace SlipInfo.Handlers
 
             if (mpSvc == null)
             {
-                Plugin.Log.LogError("An error occurred handling self crew. null MpSvc.");
+                SlipInfo.Log.LogError("An error occurred handling self crew. null MpSvc.");
                 return new InfoResponse("{\"error\": \"An error occurred handling self crew. null MpSvc.\"}", HttpStatusCode.InternalServerError);
             }
 
@@ -29,7 +29,7 @@ namespace SlipInfo.Handlers
 
             if (mpCrewController == null)
             {
-                Plugin.Log.LogError("An error occurred handling self crew. null MpCrewController.");
+                SlipInfo.Log.LogError("An error occurred handling self crew. null MpCrewController.");
                 return new InfoResponse("{\"error\": \"An error occurred handling self crew. null MpCrewController.\"}", HttpStatusCode.InternalServerError);
             }
 
@@ -46,7 +46,7 @@ namespace SlipInfo.Handlers
 
             if (self == null)
             {
-                Plugin.debugLogError("Could not find the local crewmember. (CrewSelfHandler)");
+                SlipInfo.DebugLogError("Could not find the local crewmember. (CrewSelfHandler)");
                 return new InfoResponse("{\"error\": \"Could not find the local crewmember.\"}", HttpStatusCode.InternalServerError);
             }
 
@@ -54,11 +54,11 @@ namespace SlipInfo.Handlers
             {
                 string json = JsonConvert.SerializeObject(new CrewResponse(self));
 
-                Plugin.debugLogInfo("Returning self crewmate info.");
+                SlipInfo.DebugLogInfo("Returning self crewmate info.");
                 return new InfoResponse(json, HttpStatusCode.OK);
             } catch (Exception ex)
             {
-                Plugin.Log.LogError($"An exception occurred handling self crew. {ex.Message}");
+                SlipInfo.Log.LogError($"An exception occurred handling self crew. {ex.Message}");
                 return new InfoResponse($"{{\"error\": \"An exception occurred handling self crew. {ex.Message}\"}}", HttpStatusCode.InternalServerError);
             }
         }
