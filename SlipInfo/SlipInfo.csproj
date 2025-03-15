@@ -5,15 +5,28 @@
     <AssemblyName>com.mosadie.slipinfo</AssemblyName>
     <Product>SlipInfo</Product>
     <Description>Local API for getting game state information</Description>
-    <Version>1.0.5</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
+    <Configurations>Debug;Release</Configurations>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
   </PropertyGroup>
+
+  <!-- Taken from Xilophor/Lethal-Company-Mod-Templates to set Mod Version correctly -->
+  <Target Name="SetModVersion" BeforeTargets="AddGeneratedFile" DependsOnTargets="MinVer">
+    <PropertyGroup>
+      <PlainVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PlainVersion>
+      <BepInExPluginVersion>$(PlainVersion)</BepInExPluginVersion>
+    </PropertyGroup>
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+    <PackageReference Include="MinVer" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="UnityEngine.Modules" Version="2021.3.32" IncludeAssets="compile" />
   </ItemGroup>
@@ -33,4 +46,9 @@
       <HintPath>lib/com.mosadie.mocore.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release'">
+    <Message Text="Packaging using tcli..." />
+    <Exec Command="tcli build --package-version $(MinVerMajor).$(MinVerMinor).$(MinVerPatch)" WorkingDirectory=".." />
+  </Target>
 </Project>
