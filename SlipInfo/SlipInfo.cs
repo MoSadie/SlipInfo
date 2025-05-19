@@ -14,19 +14,14 @@ namespace SlipInfo
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     [BepInDependency("com.mosadie.mocore", BepInDependency.DependencyFlags.HardDependency)]
     [BepInProcess("Slipstream_Win.exe")]
-    public class SlipInfo : BaseUnityPlugin, MoPlugin
+    public class SlipInfo : BaseUnityPlugin, IMoPlugin, IMoHttpHandler
     {
-        private static ConfigEntry<int> port;
-        private static ConfigEntry<string> prefix;
-
         private static ConfigEntry<bool> debugLogs;
-
-        private static HttpListener listener;
-        private Thread serverThread;
-
         internal static ManualLogSource Log;
 
         private Dictionary<string, InfoHandler> handlers;
+
+        public static readonly string HTTP_PREFIX = "slipinfo";
 
         public static readonly string COMPATIBLE_GAME_VERSION = "4.1595";
         public static readonly string GAME_VERSION_URL = "https://raw.githubusercontent.com/MoSadie/SlipInfo/refs/heads/main/versions.json";
@@ -43,24 +38,9 @@ namespace SlipInfo
                     return;
                 }
 
-                port = Config.Bind("Server Settings", "Port", 8001, "Port to listen on.");
-                prefix = Config.Bind("Server Settings", "Prefix", "slipinfo", "Prefix to have in path. Ex http://localhost:<port>/<prefix>/version");
-
                 debugLogs = Config.Bind("Debug", "DebugLogs", false, "Enable additional logging for debugging");
 
-                if (!HttpListener.IsSupported)
-                {
-                    Log.LogError("HttpListener is not supported on this platform.");
-                    listener = null;
-                    return;
-                }
-
-                // Start the http server
-                listener = new HttpListener();
-
-                listener.Prefixes.Add($"http://127.0.0.1:{port.Value}/{prefix.Value}/");
-                listener.Prefixes.Add($"http://localhost:{port.Value}/{prefix.Value}/");
-
+                // Configure our http handlers
                 handlers = new Dictionary<string, InfoHandler>();
                 
                 AddHandler(new VersionHandler());
@@ -74,13 +54,7 @@ namespace SlipInfo
 
                 AddHandler(new RunInfoHandler());
 
-                serverThread = new Thread(() => ServerThread(listener));
-                serverThread.Start();
-
                 Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
-
-
-                Application.quitting += ApplicationQuitting;
             } catch (PlatformNotSupportedException e)
             {
                 Log.LogError("HttpListener is not supported on this platform.");
@@ -91,25 +65,6 @@ namespace SlipInfo
                 Log.LogError(e.Message);
             }
 
-        }
-
-        private void ServerThread(HttpListener listener)
-        {
-            try
-            {
-                listener.Start();
-
-                while (listener.IsListening)
-                {
-                    HttpListenerContext context = listener.GetContext();
-                    HandleRequest(context);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.LogError("An exception occurred in the http server thread.");
-                Log.LogError(e.Message);
-            }
         }
 
         internal static void DebugLogInfo(string message)
@@ -151,7 +106,7 @@ namespace SlipInfo
                 return;
             }
 
-            string path = $"/{prefix.Value}/{handler.GetPath()}";
+            string path = $"/{HTTP_PREFIX}/{handler.GetPath()}";
 
             if (handlers.ContainsKey(path))
             {
@@ -163,13 +118,11 @@ namespace SlipInfo
             handlers.Add(path, handler);
         }
 
-        private void HandleRequest(HttpListenerContext context)
+        public HttpListenerResponse HandleRequest(HttpListenerRequest request, HttpListenerResponse response)
         {
             DebugLogInfo("Handling request");
             try
             {
-                HttpListenerRequest request = context.Request;
-                HttpListenerResponse response = context.Response;
 
                 HttpStatusCode status;
                 string responseString;
@@ -202,19 +155,19 @@ namespace SlipInfo
                 System.IO.Stream output = response.OutputStream;
                 output.Write(buffer, 0, buffer.Length);
                 output.Close();
+                return response;
             } catch (Exception e)
             {
                 Log.LogError("An error occurred while handling the request.");
                 Log.LogError(e.Message);
                 Log.LogError(e.StackTrace);
+                return response;
             }
         }
 
-    private void ApplicationQuitting()
+        public string GetPrefix()
         {
-            Logger.LogInfo("Stopping server");
-            // Stop server, the thread is looking for the listener to stop listening
-            listener.Close();
+            return HTTP_PREFIX;
         }
 
         public string GetCompatibleGameVersion()
@@ -228,6 +181,11 @@ namespace SlipInfo
         }
 
         public BaseUnityPlugin GetPluginObject()
+        {
+            return this;
+        }
+
+        public IMoHttpHandler GetHttpHandler()
         {
             return this;
         }
