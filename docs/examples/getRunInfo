@@ -1,6 +1,1 @@
-{
-    "region":"PLUTO",
-    "regionDescription":"Bleak, barren, and very cold. Two sectors, low threat; a good place to train new crew.",
-    "sector":"PLUTO OUTSKIRTS",
-    "runId":0
-}
+{"region":"ERIS","regionDescription":"A training run for new captains. Learn the basics, pick up tips, and enjoy the smooth ride.","sector":"ERIS ORBIT","runId":0}

@@ -8,9 +8,9 @@ namespace SlipInfo.Responses
     {
         public string version;
 
-        public VersionResponse(Version version)
+        public VersionResponse(string version)
         {
-            this.version = version.ToString();
+            this.version = version;
         }
     }
 }
