@@ -1,9 +1,1 @@
-{
-    "maxHealth":11800.0,
-    "minHealth":1888.0,
-    "currentHealth":10180.333,
-    "maxFuel":16,
-    "currentFuel":6,
-    "currentSalvage":0,
-    "currentGems":72
-}
+{"maxHealth":5400.0,"minHealth":0.0,"currentHealth":5300.0,"maxFuel":10,"currentFuel":10,"currentSalvage":15,"currentGems":17}

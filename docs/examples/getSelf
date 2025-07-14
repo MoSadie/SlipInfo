@@ -1,15 +1,1 @@
-{
-    "crewmate":{
-        "name":"MoSadie",
-        "archetype":"turtle",
-        "skin":"TurtleWildWest",
-        "level":3,
-        "xp":1678,
-        "currentHealth":50.0,
-        "maxHealth":50.0,
-        "currentShields":0.0,
-        "maxShields":80.0,
-        "isCaptain":false,
-        "isLocalPlayer":true
-    }
-}
+{"crewmate":{"name":"MoSadie","archetype":"cat","skin":"CatBot","level":25,"xp":257602,"currentHealth":50.0,"maxHealth":50.0,"currentShields":0.0,"maxShields":50.0,"isCaptain":true,"isOfficer":false,"roles":[{"Index":{"Value":1},"Name":"Captain","Code":"C","GrantedMessage":null,"RevokedMessage":null}],"isLocalPlayer":true,"playerId":"fmk2cJk6zclAGUEo66cG"}}

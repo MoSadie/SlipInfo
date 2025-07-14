@@ -1,13 +1,1 @@
-{
-    "enemyShip":{
-        "maxHealth":10868.0,
-        "minHealth":0.0,
-        "currentHealth":3053.50952,
-        "name":"FUEL SPEEDER",
-        "invaders":"None",
-        "intel":"Automated fuel supply ship. Lightly armed but built for extreme speed.",
-        "threatLevel":5,
-        "cargoLevel":5,
-        "speedLevel":10
-    }
-}
+{"enemyShip":{"maxHealth":325.0,"minHealth":0.0,"currentHealth":325.0,"name":"SLIGHT SPY","invaders":"Grunt Trainees","intel":"Your crew will earn permanent XP for most actions aboard, both in and out of battle.","threatLevel":1,"cargoLevel":2,"speedLevel":2}}

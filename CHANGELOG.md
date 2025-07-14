@@ -1,3 +1,7 @@
+## v1.0.6
+
+Updated to MoCore v2.0.1, should only be internal changes.
+
 ## v1.0.5
 
 Attempted to fix an issue where after some time the server would stop responding.

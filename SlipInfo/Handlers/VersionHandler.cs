@@ -17,7 +17,7 @@ namespace SlipInfo.Handlers
 
         public InfoResponse HandleRequest(NameValueCollection query)
         {
-            VersionResponse response = new VersionResponse(typeof(VersionHandler).Assembly.GetName().Version);
+            VersionResponse response = new VersionResponse(PluginInfo.PLUGIN_VERSION);
 
             string json = JsonConvert.SerializeObject(response);
 
