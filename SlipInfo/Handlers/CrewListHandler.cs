@@ -8,7 +8,7 @@ using SlipInfo.Responses;
 
 namespace SlipInfo.Handlers
 {
-    class CrewListHandler : InfoHandler
+    class CrewListHandler : IInfoHandler
     {
         public string GetPath()
         {

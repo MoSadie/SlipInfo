@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SlipInfo.Handlers
 {
-    class CrewSearchHandler : InfoHandler
+    class CrewSearchHandler : IInfoHandler
     {
         public string GetPath()
         {

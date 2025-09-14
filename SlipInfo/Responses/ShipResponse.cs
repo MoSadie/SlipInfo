@@ -9,7 +9,7 @@ namespace SlipInfo.Responses
     {
         ShipInfo ship;
 
-        public ShipResponse(MpShipController ship)
+        public ShipResponse(MpShipController ship, MpShipTechController tech)
         {
             if (ship == null)
             {
@@ -17,7 +17,7 @@ namespace SlipInfo.Responses
             }
             else
             {
-                this.ship = new ShipInfo(ship);
+                this.ship = new ShipInfo(ship, tech);
             }
         }
     }

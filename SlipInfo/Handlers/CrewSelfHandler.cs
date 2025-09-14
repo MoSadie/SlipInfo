@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SlipInfo.Handlers
 {
-    class CrewSelfHandler : InfoHandler
+    class CrewSelfHandler : IInfoHandler
     {
         public string GetPath()
         {

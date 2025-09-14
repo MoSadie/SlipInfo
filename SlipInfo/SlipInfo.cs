@@ -19,7 +19,7 @@ namespace SlipInfo
         private static ConfigEntry<bool> debugLogs;
         internal static ManualLogSource Log;
 
-        private Dictionary<string, InfoHandler> handlers;
+        private Dictionary<string, IInfoHandler> handlers;
 
         public static readonly string HTTP_PREFIX = "slipinfo";
 
@@ -41,7 +41,7 @@ namespace SlipInfo
                 debugLogs = Config.Bind("Debug", "DebugLogs", false, "Enable additional logging for debugging");
 
                 // Configure our http handlers
-                handlers = new Dictionary<string, InfoHandler>();
+                handlers = new Dictionary<string, IInfoHandler>();
                 
                 AddHandler(new VersionHandler());
 
@@ -99,7 +99,7 @@ namespace SlipInfo
             }
         }
 
-        private void AddHandler(InfoHandler handler)
+        private void AddHandler(IInfoHandler handler)
         {
             if (handlers == null || handler == null)
             {
@@ -133,7 +133,7 @@ namespace SlipInfo
                 if (handlers.ContainsKey(pathUrl))
                 {
                     DebugLogInfo($"Handling request with path: {pathUrl}");
-                    InfoHandler handler = handlers[pathUrl];
+                    IInfoHandler handler = handlers[pathUrl];
                     InfoResponse infoResponse = handler.HandleRequest(request.QueryString);
 
                     status = infoResponse.status;
