@@ -43,8 +43,19 @@ namespace SlipInfo.Data
         private static List<ShipTech> ShipTech(MpShipTechController shipTech)
         {
             List<ShipTech> techs = new List<ShipTech>();
+
+            if (shipTech == null || shipTech.AllTechs == null)
+            {
+                return techs; // Empty List
+            }
+
             foreach (var tech in shipTech.AllTechs)
             {
+                if (tech == null || tech.DefVo == null)
+                {
+                    continue; // Skip null techs
+                }
+
                 techs.Add(new ShipTech(tech));
             }
             return techs;
@@ -60,17 +71,35 @@ namespace SlipInfo.Data
         public int MaxLevel { get; set; }
         public bool IsActive { get; set; }
         public string Color { get; set; }
+
+        public ShipTechUnitType UnitType { get; set; }
         public List<ShipTechLevel> Levels { get; set; }
         public ShipTech(AbstractShipTech tech)
         {
-            Name = tech.DefVo.Title;
-            ShortDescription = tech.DefVo.ShortDescription;
-            LongDescription = tech.DefVo.LongDescription;
-            Level = tech.Level;
-            MaxLevel = tech.MaxLevel;
-            IsActive = tech.IsActive();
-            Levels = GetLevels(tech);
-            Color = tech.DefVo.Color;
+            if (tech == null || tech.DefVo == null)
+            {
+                Name = "Unknown";
+                ShortDescription = "Unknown";
+                LongDescription = "Unknown";
+                Level = 0;
+                MaxLevel = 0;
+                IsActive = false;
+                Levels = new List<ShipTechLevel>();
+                Color = "#FFFFFFFF";
+                UnitType = ShipTechUnitType.VALUE;
+            }
+            else
+            {
+                Name = tech.DefVo.Title;
+                ShortDescription = tech.DefVo.ShortDescription;
+                LongDescription = tech.DefVo.LongDescription;
+                Level = tech.Level;
+                MaxLevel = tech.MaxLevel;
+                IsActive = tech.IsActive();
+                Levels = GetLevels(tech);
+                Color = tech.DefVo.Color;
+                UnitType = tech.UnitType;
+            }
         }
 
         private static List<ShipTechLevel> GetLevels(AbstractShipTech tech)

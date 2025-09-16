@@ -51,7 +51,7 @@ namespace SlipInfo.Handlers
                 return new InfoResponse(json, HttpStatusCode.OK);
             } catch (Exception ex)
             {
-                SlipInfo.Log.LogError($"An exception occurred handling ship info. {ex.Message}");
+                SlipInfo.Log.LogError($"An exception occurred handling ship info. {ex.Message}\n{ex.StackTrace}");
                 return new InfoResponse($"{{\"error\": \"An exception occurred handling ship info. {ex.Message}\"}}", HttpStatusCode.InternalServerError);
             }
         }
