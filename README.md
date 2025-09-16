@@ -143,13 +143,89 @@ Returns information about the ship including type, name, ship health, and fuel t
 
 ```json
 {
-    "maxHealth":11800.0,
-    "minHealth":1888.0,
-    "currentHealth":10180.333,
-    "maxFuel":16,
-    "currentFuel":6, // Note this may not be accurate if you are not the captain.
-    "currentSalvage":0, //Note this may not be accurate if you are not the captain.
-    "currentGems":72
+  "maxHealth": 5400.0,
+  "minHealth": 0.0,
+  "currentHealth": 5400.0,
+  "maxFuel": 10,
+  "currentFuel": 0, // Note this may not be accurate if you are not the captain or first mate.
+  "currentSalvage": 0, // Note this may not be accurate if you are not the captain or first mate.
+  "currentGems": 0,
+  "shipTech": [
+    {
+      "Name": "Scan Booster",
+      "ShortDescription": "Improves scan success rate",
+      "LongDescription": "Improves scan success rate when exploring.",
+      "Level": 1,
+      "MaxLevel": 5,
+      "IsActive": true,
+      "Color": "#40c5c7",
+      "UnitType": 1,
+      "Levels": [
+        {
+          "Level": 1,
+          "Value": 30.0,
+          "Cost": 0
+        },
+        {
+          "Level": 2,
+          "Value": 50.0,
+          "Cost": 5
+        },
+        {
+          "Level": 3,
+          "Value": 70.0,
+          "Cost": 15
+        },
+        {
+          "Level": 4,
+          "Value": 90.0,
+          "Cost": 25
+        },
+        {
+          "Level": 5,
+          "Value": 99.0,
+          "Cost": 50
+        }
+      ]
+    },
+    {
+      "Name": "Fuel Compressor",
+      "ShortDescription": "Increases max fuel cell capacity",
+      "LongDescription": "Increases max fuel cell capacity using alien compression technology.",
+      "Level": 1,
+      "MaxLevel": 5,
+      "IsActive": true,
+      "Color": "#ca2dca",
+      "UnitType": 0,
+      "Levels": [
+        {
+          "Level": 1,
+          "Value": 10.0,
+          "Cost": 0
+        },
+        {
+          "Level": 2,
+          "Value": 12.0,
+          "Cost": 10
+        },
+        {
+          "Level": 3,
+          "Value": 14.0,
+          "Cost": 25
+        },
+        {
+          "Level": 4,
+          "Value": 16.0,
+          "Cost": 50
+        },
+        {
+          "Level": 5,
+          "Value": 20.0,
+          "Cost": 75
+        }
+      ]
+    }
+  ]
 }
 ```
 </details>
