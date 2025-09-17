@@ -72,7 +72,7 @@ namespace SlipInfo.Data
         public bool IsActive { get; set; }
         public string Color { get; set; }
 
-        public ShipTechUnitType UnitType { get; set; }
+        public string Unit { get; set; }
         public List<ShipTechLevel> Levels { get; set; }
         public ShipTech(AbstractShipTech tech)
         {
@@ -86,7 +86,7 @@ namespace SlipInfo.Data
                 IsActive = false;
                 Levels = new List<ShipTechLevel>();
                 Color = "#FFFFFFFF";
-                UnitType = ShipTechUnitType.VALUE;
+                Unit = ShipTechUnitType.VALUE.ToString();
             }
             else
             {
@@ -98,7 +98,7 @@ namespace SlipInfo.Data
                 IsActive = tech.IsActive();
                 Levels = GetLevels(tech);
                 Color = tech.DefVo.Color;
-                UnitType = tech.UnitType;
+                Unit = tech.UnitType.ToString();
             }
         }
 

@@ -159,7 +159,7 @@ Returns information about the ship including type, name, ship health, and fuel t
       "MaxLevel": 5,
       "IsActive": true,
       "Color": "#40c5c7",
-      "UnitType": 1,
+      "Unit": "VALUE",
       "Levels": [
         {
           "Level": 1,

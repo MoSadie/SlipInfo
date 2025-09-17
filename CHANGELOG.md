@@ -1,3 +1,7 @@
+## v1.0.7
+
+Added Ship Tech information to /getShipInfo, including both active and in-active tech, descriptions, and levels.
+
 ## v1.0.6
 
 Updated to MoCore v2.0.1, should only be internal changes.
