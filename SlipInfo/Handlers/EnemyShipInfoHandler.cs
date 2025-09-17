@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SlipInfo.Handlers
 {
-    class EnemyShipInfoHandler : InfoHandler
+    class EnemyShipInfoHandler : IInfoHandler
     {
         public string GetPath()
         {

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SlipInfo.Handlers
 {
-    class ShipInfoHandler : InfoHandler
+    class ShipInfoHandler : IInfoHandler
     {
         public string GetPath()
         {
@@ -35,7 +35,15 @@ namespace SlipInfo.Handlers
                     return new InfoResponse("{\"error\": \"An error occurred handling ship info. null MpShipController.\"}", HttpStatusCode.InternalServerError);
                 }
 
-                ShipInfo info = new ShipInfo(mpShipController);
+                MpShipTechController mpShipTechController = mpSvc.ShipTech;
+
+                if (mpShipTechController == null)
+                {
+                    SlipInfo.Log.LogError("An error occurred in ShipInfoHandler! MpShipTechController was null!");
+                    return new InfoResponse("{\"error\": \"An error occurred handling ship info. null MpShipTechController.\"}", HttpStatusCode.InternalServerError);
+                }
+
+                ShipInfo info = new ShipInfo(mpShipController, mpShipTechController);
 
                 string json = JsonConvert.SerializeObject(info);
 
@@ -43,7 +51,7 @@ namespace SlipInfo.Handlers
                 return new InfoResponse(json, HttpStatusCode.OK);
             } catch (Exception ex)
             {
-                SlipInfo.Log.LogError($"An exception occurred handling ship info. {ex.Message}");
+                SlipInfo.Log.LogError($"An exception occurred handling ship info. {ex.Message}\n{ex.StackTrace}");
                 return new InfoResponse($"{{\"error\": \"An exception occurred handling ship info. {ex.Message}\"}}", HttpStatusCode.InternalServerError);
             }
         }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SlipInfo.Handlers
 {
-    internal interface InfoHandler
+    internal interface IInfoHandler
     {
         public InfoResponse HandleRequest(NameValueCollection query);
 
